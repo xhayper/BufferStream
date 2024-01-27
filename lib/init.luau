@@ -64,11 +64,12 @@ function BufferStream.new(data: (buffer | string)?): BufferStream
 
 	local buf
 
-	if buf and typeof(data) == "string" then
+	if data and typeof(data) == "string" then
 		buf = buffer.fromstring(data)
-	elseif buf and typeof(data) == "buffer" then
-		buf = data
-	elseif buf then
+	elseif data and typeof(data) == "buffer" then
+		buf = buffer.create(buffer.len(buf))
+		buffer.copy(buf, 0, data)
+	elseif data then
 		error(`bad argument #1 to 'new' (buffer or string expected, got {typeof(data)})`)
 	else
 		buf = buffer.create(0)
