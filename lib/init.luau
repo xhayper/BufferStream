@@ -67,7 +67,7 @@ function BufferStream.new(data: (buffer | string)?): BufferStream
 	if data and typeof(data) == "string" then
 		buf = buffer.fromstring(data)
 	elseif data and typeof(data) == "buffer" then
-		buf = buffer.create(buffer.len(buf))
+		buf = buffer.create(buffer.len(data))
 		buffer.copy(buf, 0, data)
 	elseif data then
 		error(`bad argument #1 to 'new' (buffer or string expected, got {typeof(data)})`)
@@ -132,7 +132,7 @@ function BufferStream.readi8(self: BufferStream, offset: number?): number
 end
 
 function BufferStream.readbytes(self: BufferStream, length: number, offset: number?): BufferStream
-	local value = buffer.readstring(self.buffer, length, offset or self.byteOffset)
+	local value = buffer.readstring(self.buffer, offset or self.byteOffset, length)
 	if not offset then
 		self.byteOffset += length
 	end
